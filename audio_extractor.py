@@ -1,3 +1,4 @@
+import sys
 import os
 import shutil
 import tempfile
@@ -13,6 +14,21 @@ SUPPORTED_FORMATS = {"mp3", "m4a", "wav"}
 ProgressCallback = Callable[[int], None]
 StatusCallback = Callable[[str], None]
 
+def get_ffmpeg_location() -> str | None:
+    if getattr(sys, "frozen", False):
+        executable_path = Path(sys.executable)
+
+        bundled_ffmpeg = (
+            executable_path.parent
+            / ".."
+            / "Resources"
+            / "ffmpeg"
+        ).resolve()
+
+        if bundled_ffmpeg.exists():
+            return str(bundled_ffmpeg.parent)
+
+    return None
 
 def get_unique_path(path: Path) -> Path:
     if not path.exists():
@@ -160,12 +176,15 @@ def extract_audio(
             temporary_directory
         )
 
+        ffmpeg_location = get_ffmpeg_location()
+
         options = {
             "format": "bestaudio/best",
             "outtmpl": str(
                 temporary_path / "audio.%(ext)s"
             ),
             "noplaylist": True,
+            "ffmpeg_location": ffmpeg_location,
             "progress_hooks": [
                 progress_hook,
             ],
