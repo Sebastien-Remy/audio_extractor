@@ -36,7 +36,9 @@ Pre-built versions of Audio Extractor are available for:
 - 🪟 **Windows**
 - 🐧 **Linux**
 
-Go to the **Releases** section of this GitHub repository and download the latest version for your operating system.
+➡️ **[Download the latest version of Audio Extractor](../../releases/latest)**
+
+Choose the package corresponding to your operating system from the release assets.
 
 ### macOS
 
